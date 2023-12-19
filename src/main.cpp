@@ -17,7 +17,7 @@ int main(int argc, char const* argv[])
 {
     try
     {
-        cout << "Let's get started ..." << endl;
+        cout << "Let's get started to chat with Google Gemini AI." << endl;
 
         auto prompt = argc > 1 ? argv[1] : "Write a story about a magic backpack";
         cout << format("You : {}", prompt) << endl;
@@ -28,7 +28,7 @@ int main(int argc, char const* argv[])
     }
     catch (const std::exception& e)
     {
-        std::cerr << e.what() << '\n';
+        std::cerr << "Exception : " << e.what() << '\n';
     }
 
     return 0;
@@ -53,12 +53,11 @@ Task<string> chat(string_view input)
 
     boost::json::object obj;
     boost::json::array contents, parts;
-    // obj["prompt"].emplace_object()["text"] = input;
-    obj["contents"] = { "parts" };
+    // obj["prompt"].emplace_object()["text"] = input;    
     parts = { object({{"text", input}}) };
     contents = { object({{ "parts", parts }}) };
-
     obj["contents"] = contents;
+
     ostringstream oss;
 
     // cout << jv << endl;
@@ -87,12 +86,12 @@ Task<string> chat(string_view input)
     }
 
     //auto output = value["candidates"].as_array()[0].as_object()["output"];
-    auto output = value["candidates"].as_array()[0].
-        as_object()["content"].
-        as_object()["parts"].as_array()[0].
-        as_object()["text"];//.as_array()[0].as_object()["text"];
+    auto output = value["candidates"].as_array()[0].as_object()
+        ["content"].as_object()
+        ["parts"].as_array()[0].as_object()
+        ["text"];
 
-    oss << output.as_string().c_str();   
+    oss << output.as_string().c_str();
 
     co_return boost::replace_all_copy(oss.str(), "\\n", "\n ");
 }
