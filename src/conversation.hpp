@@ -14,5 +14,6 @@ public:
     Task<std::string> chat(std::string_view input);
 
 private:
-    boost::json::value history;        
+    co_http::client_ptr _client;
+    boost::json::value _history;        
 };

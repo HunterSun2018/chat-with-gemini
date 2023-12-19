@@ -25,18 +25,19 @@ int main(int argc, char const* argv[])
         auto prompt = argc > 1 ? argv[1] : "Write a story about a magic backpack";
         cout << format("You : {}", prompt) << endl;
 
-        auto response = chat(prompt).get();
+        // auto response = chat(prompt).get();
 
-        cout << format("Gemini : {}", response) << endl;
+        // cout << format("Gemini : {}", response) << endl;
 
         auto client = co_http::Client::create();
 
         auto conversation = make_shared<Conversation>(client);
 
-        string input = readline("prompt : ");
-        while (input != "exit")
+        // string input = readline("prompt : ");
+        // while (prompt != "exit")
         {
-            /* code */
+           auto response = conversation->chat(prompt).get();
+           cout << response << endl;
         }
 
 
