@@ -6,8 +6,11 @@
 #include <regex>
 #include <co_helper.hpp>
 #include <co_http_client.hpp>
+//#include <boost/json.hpp>
 #include <boost/json/src.hpp>
 #include <boost/algorithm/string/replace.hpp>
+#include <readline/readline.h>
+#include "conversation.hpp"
 
 using namespace std;
 
@@ -25,6 +28,18 @@ int main(int argc, char const* argv[])
         auto response = chat(prompt).get();
 
         cout << format("Gemini : {}", response) << endl;
+
+        auto client = co_http::Client::create();
+
+        auto conversation = make_shared<Conversation>(client);
+
+        string input = readline("prompt : ");
+        while (input != "exit")
+        {
+            /* code */
+        }
+
+
     }
     catch (const std::exception& e)
     {
@@ -95,3 +110,4 @@ Task<string> chat(string_view input)
 
     co_return boost::replace_all_copy(oss.str(), "\\n", "\n ");
 }
+
